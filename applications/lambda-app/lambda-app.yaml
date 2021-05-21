@@ -1,0 +1,43 @@
+
+spec_version: 1
+kind: application
+
+inputs:
+
+
+source:
+  os_type: linux
+  image:
+    azure_image:
+      - urn: Canonical:UbuntuServer:16.04-LTS:latest
+        username: adminuser
+    ami:
+      - id: ami-02fe94dee086c0c37
+        region: us-east-1
+        username: ubuntu
+      - id: ami-02d0ea44ae3fe9561
+        region: us-west-2
+        username: ubuntu
+
+infrastructure:
+  compute:
+    spec:
+      azure:
+        vm_size: Standard_D2a_v4
+      aws: 
+        instance_type: t3.nano
+  connectivity:
+    internal:
+      - port_info:
+          port: 80
+
+configuration:  
+  initialization:
+    script: init.sh
+  healthcheck:
+    script: healthcheck.sh
+    timeout: 300
+
+
+debugging:
+  connection_protocol: SSH
