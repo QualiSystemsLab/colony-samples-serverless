@@ -55,7 +55,7 @@ ingress:
       rules:
       - default: true
         port: 80
-        application: lambda-app
+        application: deployment
         shortcut: ${colony.environment.id}.${base_domain}/${colony.environment.id}
 
 
