@@ -1,0 +1,52 @@
+spec_version: 1
+kind: blueprint
+metadata:
+  description: Lambda example using API GW and DynamoDB
+
+clouds: 
+  - AWS: us-west-2
+
+inputs:
+  - REGION: us-west-2
+  - base_domain:
+      description: Domain name in your Route 53 hosted zones, must be public
+  - lambda_role_arn: 
+      description: Role arn used by Lambda. Must include ability to create and write to CloudWatch Log groups and put items in dynamoDB.
+  - acm_cert_arn: 
+      description: Certificate arn to use with api gateway domain, ideally a wildcard cert.
+
+applications:
+  - lambda-app:
+
+services:
+  - lambda-hw:
+        input_values:
+          - branch: $colony.repos.current.branch
+          - sandbox_id: $colony.environment.id
+          - REGION: $REGION
+          - lambda_role_arn: $lambda_role_arn
+          - apigw_rr_id: $colony.services.lambda-apigw.outputs.apigw_rr_id
+          - apigw_id: $colony.services.lambda-apigw.outputs.apigw_id
+          - apigw_exec_arn: $colony.services.lambda-apigw.outputs.apigw_exec_arn
+        depends_on:
+          - lambda-apigw
+  - lambda-apigw:
+        input_values:
+          - branch: $colony.repos.current.branch
+          - sandbox_id: $colony.environment.id
+          - REGION: $REGION
+          - acm_cert_arn: $acm_cert_arn
+          - base_domain: $base_domain
+
+ingress:
+  listeners:
+    - http: 80
+      rules:
+      - default: true
+        port: 80
+        application: lambda-app
+        shortcut: ${colony.environment.id}.${base_domain}/${colony.environment.id}
+
+
+debugging:
+  availability: on

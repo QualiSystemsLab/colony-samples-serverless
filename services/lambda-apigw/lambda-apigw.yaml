@@ -1,0 +1,32 @@
+spec_version: 1
+kind: TerraForm
+inputs:
+  - REGION:
+  - ROLE_ARN: PowerUserAccess
+  - branch:
+  - sandbox_id:
+  - base_domain:
+  - acm_cert_arn:
+  
+
+module:
+  source: git::https://github.com/QualiSystemsLab/colony-samples-serverless.git//terraform/lambda-apigw?ref=${branch}
+  
+
+terraform_version: 0.14.5
+
+variables: 
+  values:       
+    - aws_region: $REGION
+    - sandbox_id: $sandbox_id
+    - base_domain: $base_domain
+    - acm_cert_arn: $acm_cert_arn
+
+outputs:
+  - apigw_rr_id
+  - apigw_id
+  - apigw_exec_arn
+
+permissions:  
+  aws:
+    role_arn: $ROLE_ARN
