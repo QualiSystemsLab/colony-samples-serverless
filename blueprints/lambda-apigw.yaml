@@ -9,10 +9,13 @@ clouds:
 inputs:
   - REGION: us-west-2
   - base_domain:
+      default_value:
       description: Domain name in your Route 53 hosted zones, must be public
-  - lambda_role_arn: 
+  - lambda_role_arn:
+      default_value:
       description: Role arn used by Lambda. Must include ability to create and write to CloudWatch Log groups and put items in dynamoDB.
-  - acm_cert_arn: 
+  - acm_cert_arn:
+      default_value:
       description: Certificate arn to use with api gateway domain, ideally a wildcard cert.
 
 applications:
