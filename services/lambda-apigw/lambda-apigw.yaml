@@ -11,6 +11,7 @@ inputs:
 
 module:
   source: git::https://github.com/QualiSystemsLab/colony-samples-serverless.git//terraform/lambda-apigw?ref=${branch}
+  enable_auto_tagging: false
   
 
 terraform_version: 0.14.5
