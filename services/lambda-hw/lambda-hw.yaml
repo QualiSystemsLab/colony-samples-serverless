@@ -10,6 +10,8 @@ inputs:
   - apigw_id:
   - apigw_exec_arn:
   - dynamodb_table_name:
+  - bucket_name:
+  - bucket_path_to_file:
   
 
 module:
@@ -27,6 +29,8 @@ variables:
     - apigw_id: $apigw_id
     - apigw_exec_arn: $apigw_exec_arn
     - dynamodb_table_name: $dynamodb_table_name
+    - bucket_name: $bucket_name
+    - bucket_path_to_file: $bucket_path_to_file
 
 permissions:  
   aws:

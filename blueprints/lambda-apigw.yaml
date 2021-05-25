@@ -17,6 +17,12 @@ inputs:
   - acm_cert_arn:
       default_value:
       description: Certificate arn to use with api gateway domain, ideally a wildcard cert.
+  - bucket_name:
+      default_value:
+      description: Name of the bucket holding the artifact.
+  - bucket_path_to_file:
+      default_value:
+      description: "path and name of artifact ex: test/lambda.zip"
 
 applications:
   - deployment:
@@ -32,6 +38,8 @@ services:
           - apigw_id: $colony.services.lambda-apigw.outputs.apigw_id
           - apigw_exec_arn: $colony.services.lambda-apigw.outputs.apigw_exec_arn
           - dynamodb_table_name: $colony.services.lambda-dydb.outputs.dynamodb_table_name
+          - bucket_name: $bucket_name
+          - bucket_path_to_file: $bucket_path_to_file
         depends_on:
           - lambda-apigw
           - lambda-dydb

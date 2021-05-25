@@ -28,3 +28,12 @@ variable "apigw_exec_arn" {
 variable "dynamodb_table_name" {
   type    = string
 }
+
+variable "bucket_name" {
+  type    = string
+}
+
+
+variable "bucket_path_to_file" {
+  type    = string
+}
