@@ -1,0 +1,27 @@
+spec_version: 1
+kind: TerraForm
+inputs:
+  - REGION:
+  - ROLE_ARN: PowerUserAccess
+  - branch:
+  - sandbox_id:
+  
+
+module:
+  source: git::https://github.com/QualiSystemsLab/colony-samples-serverless.git//terraform/lambda-dydb?ref=${branch}
+  
+
+terraform_version: 0.14.5
+
+variables: 
+  values:       
+    - aws_region: $REGION
+    - sandbox_id: $sandbox_id
+
+outputs:
+  - dynamodb_table_name
+
+
+permissions:  
+  aws:
+    role_arn: $ROLE_ARN

@@ -1,0 +1,37 @@
+spec_version: 1
+kind: TerraForm
+inputs:
+  - REGION:
+  - ROLE_ARN: PowerUserAccess
+  - branch:
+  - sandbox_id:
+  - lambda_role_arn:
+  - apigw_rr_id:
+  - apigw_id:
+  - apigw_exec_arn:
+  - dynamodb_table_name:
+  - bucket_name:
+  - bucket_path_to_file:
+  
+
+module:
+  source: git::https://github.com/QualiSystemsLab/colony-samples-serverless.git//terraform/lambda-hw?ref=${branch}
+  
+
+terraform_version: 0.14.5
+
+variables: 
+  values:       
+    - aws_region: $REGION
+    - sandbox_id: $sandbox_id
+    - lambda_role_arn: $lambda_role_arn
+    - apigw_rr_id: $apigw_rr_id
+    - apigw_id: $apigw_id
+    - apigw_exec_arn: $apigw_exec_arn
+    - dynamodb_table_name: $dynamodb_table_name
+    - bucket_name: $bucket_name
+    - bucket_path_to_file: $bucket_path_to_file
+
+permissions:  
+  aws:
+    role_arn: $ROLE_ARN

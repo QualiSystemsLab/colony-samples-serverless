@@ -5,12 +5,13 @@ inputs:
   - ROLE_ARN: PowerUserAccess
   - branch:
   - sandbox_id:
-  - lambda_role_arn:
   - base_domain:
+  - acm_cert_arn:
   
 
 module:
-  source: git::https://github.com/QualiSystemsLab/colony-samples-serverless.git//terraform/lambda-hello-world?ref=${branch}
+  source: git::https://github.com/QualiSystemsLab/colony-samples-serverless.git//terraform/lambda-apigw?ref=${branch}
+  enable_auto_tagging: false
   
 
 terraform_version: 0.14.5
@@ -19,8 +20,13 @@ variables:
   values:       
     - aws_region: $REGION
     - sandbox_id: $sandbox_id
-    - lambda_role_arn: $lambda_role_arn
     - base_domain: $base_domain
+    - acm_cert_arn: $acm_cert_arn
+
+outputs:
+  - apigw_rr_id
+  - apigw_id
+  - apigw_exec_arn
 
 permissions:  
   aws:

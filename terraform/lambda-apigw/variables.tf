@@ -9,7 +9,7 @@ variable "sandbox_id" {
   default = "none"
 }
 
-variable "lambda_role_arn" {
+variable "acm_cert_arn" {
   type    = string
 }
 

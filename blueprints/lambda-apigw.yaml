@@ -1,29 +1,61 @@
 spec_version: 1
 kind: blueprint
 metadata:
-  description: Lambda example using API GW and DynamoDB
+  description: Lambda example using API GW and DynamoDB split apart
 
 clouds: 
-  - AWSOther: us-east-1
+  - AWS: us-west-2
 
 inputs:
-  - REGION: us-east-1
+  - REGION: us-west-2
   - base_domain:
+      default_value:
       description: Domain name in your Route 53 hosted zones, must be public
-  - lambda_role_arn: 
+  - lambda_role_arn:
+      default_value:
       description: Role arn used by Lambda. Must include ability to create and write to CloudWatch Log groups and put items in dynamoDB.
+  - acm_cert_arn:
+      default_value:
+      description: Certificate arn to use with api gateway domain, ideally a wildcard cert.
+  - bucket_name:
+      default_value:
+      description: Name of the bucket holding the artifact.
+  - bucket_path_to_file:
+      default_value:
+      description: "path and name of artifact ex: test/lambda.zip"
 
 applications:
-  - lambda-app:
+  - deployment:
 
 services:
-  - lambda-hello-world:
+  - lambda-hw:
         input_values:
           - branch: $colony.repos.current.branch
           - sandbox_id: $colony.environment.id
           - REGION: $REGION
           - lambda_role_arn: $lambda_role_arn
+          - apigw_rr_id: $colony.services.lambda-apigw.outputs.apigw_rr_id
+          - apigw_id: $colony.services.lambda-apigw.outputs.apigw_id
+          - apigw_exec_arn: $colony.services.lambda-apigw.outputs.apigw_exec_arn
+          - dynamodb_table_name: $colony.services.lambda-dydb.outputs.dynamodb_table_name
+          - bucket_name: $bucket_name
+          - bucket_path_to_file: $bucket_path_to_file
+        depends_on:
+          - lambda-apigw
+          - lambda-dydb
+  - lambda-apigw:
+        input_values:
+          - branch: $colony.repos.current.branch
+          - sandbox_id: $colony.environment.id
+          - REGION: $REGION
+          - acm_cert_arn: $acm_cert_arn
           - base_domain: $base_domain
+  - lambda-dydb:
+        input_values:
+          - branch: $colony.repos.current.branch
+          - sandbox_id: $colony.environment.id
+          - REGION: $REGION
+
 
 ingress:
   listeners:
@@ -31,7 +63,7 @@ ingress:
       rules:
       - default: true
         port: 80
-        application: lambda-app
+        application: deployment
         shortcut: ${colony.environment.id}.${base_domain}/${colony.environment.id}
 
 
