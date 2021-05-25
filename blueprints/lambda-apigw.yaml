@@ -16,7 +16,7 @@ inputs:
       description: Certificate arn to use with api gateway domain, ideally a wildcard cert.
 
 applications:
-  - lambda-app:
+  - deployment:
 
 services:
   - lambda-hw:
@@ -28,8 +28,10 @@ services:
           - apigw_rr_id: $colony.services.lambda-apigw.outputs.apigw_rr_id
           - apigw_id: $colony.services.lambda-apigw.outputs.apigw_id
           - apigw_exec_arn: $colony.services.lambda-apigw.outputs.apigw_exec_arn
+          - dynamodb_table_name: $colony.services.lambda-dydb.outputs.dynamodb_table_name
         depends_on:
           - lambda-apigw
+          - lambda-dydb
   - lambda-apigw:
         input_values:
           - branch: $colony.repos.current.branch
@@ -37,6 +39,12 @@ services:
           - REGION: $REGION
           - acm_cert_arn: $acm_cert_arn
           - base_domain: $base_domain
+  - lambda-dydb:
+        input_values:
+          - branch: $colony.repos.current.branch
+          - sandbox_id: $colony.environment.id
+          - REGION: $REGION
+
 
 ingress:
   listeners:

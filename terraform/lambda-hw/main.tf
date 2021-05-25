@@ -15,7 +15,7 @@ resource "aws_lambda_function" "hello_world" {
   filename      = "${path.module}/hello_world.zip"
   environment {
     variables = {
-      TABLE_NAME = aws_dynamodb_table.example_table.name
+      TABLE_NAME = var.dynamodb_table_name
       SANDBOX_ID = var.sandbox_id
     }
   }
@@ -25,17 +25,3 @@ resource "aws_cloudwatch_log_group" "hello_world_log_group" {
   name              = "/aws/lambda/hello_world_${var.sandbox_id}"
   retention_in_days = 3
 }
-
-resource "aws_dynamodb_table" "example_table" {
-  name        = "hello_world_table_${var.sandbox_id}"
-  hash_key    = "requestId"
-  read_capacity  = 5
-  write_capacity = 5
-  attribute {
-    name = "requestId"
-    type = "S"
-  }
-}
-
-
-

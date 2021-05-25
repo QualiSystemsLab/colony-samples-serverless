@@ -25,3 +25,6 @@ variable "apigw_exec_arn" {
   type    = string
 }
 
+variable "dynamodb_table_name" {
+  type    = string
+}

@@ -9,6 +9,7 @@ inputs:
   - apigw_rr_id:
   - apigw_id:
   - apigw_exec_arn:
+  - dynamodb_table_name:
   
 
 module:
@@ -25,6 +26,7 @@ variables:
     - apigw_rr_id: $apigw_rr_id
     - apigw_id: $apigw_id
     - apigw_exec_arn: $apigw_exec_arn
+    - dynamodb_table_name: $dynamodb_table_name
 
 permissions:  
   aws:

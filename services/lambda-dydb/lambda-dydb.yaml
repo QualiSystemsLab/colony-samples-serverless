@@ -5,12 +5,10 @@ inputs:
   - ROLE_ARN: PowerUserAccess
   - branch:
   - sandbox_id:
-  - lambda_role_arn:
-  - base_domain:
   
 
 module:
-  source: git::https://github.com/QualiSystemsLab/colony-samples-serverless.git//terraform/lambda-hello-world?ref=${branch}
+  source: git::https://github.com/QualiSystemsLab/colony-samples-serverless.git//terraform/lambda-dydb?ref=${branch}
   
 
 terraform_version: 0.14.5
@@ -19,8 +17,10 @@ variables:
   values:       
     - aws_region: $REGION
     - sandbox_id: $sandbox_id
-    - lambda_role_arn: $lambda_role_arn
-    - base_domain: $base_domain
+
+outputs:
+  - dynamodb_table_name
+
 
 permissions:  
   aws:
