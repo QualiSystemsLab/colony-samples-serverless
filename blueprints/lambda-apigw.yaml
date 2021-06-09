@@ -4,7 +4,7 @@ metadata:
   description: Lambda example using API GW and DynamoDB
 
 clouds: 
-  - AWS: us-west-2
+  - AWS 2: us-west-2
 
 inputs:
   - REGION: us-west-2
