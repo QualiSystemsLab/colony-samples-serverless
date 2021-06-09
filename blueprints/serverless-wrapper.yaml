@@ -1,0 +1,40 @@
+spec_version: 1
+kind: blueprint
+metadata:
+  description: >
+    Serverless wraper example 
+    
+clouds: 
+  - AWS 2: us-west-2
+
+inputs:  
+  - SLS_Version: "1.83.2"  
+  - SLS_Repo:
+      default_value: "https://github.com/serverless/examples/tree/master/aws-python-simple-http-endpoint"
+      description: Path to a github repo containing a serverless project or when used during local development path for the location of the serverless project after the stages artifact is extracted
+  - PATH: 
+      default_value: /ping
+      description: Specify the path to register for the endoint redirect
+
+applications:
+  - redirect:
+      input_values:
+        - WEBAPP_ENDPOINT: ${colony.services.serverless.outputs.URL}${PATH}
+      depends_on:
+        - serverless
+    
+services:
+  - serverless:
+      input_values:
+        - SANDBOX_ID: $colony.environment.id
+        - REGION: us-west-2
+        - SLS_Repo: $SLS_Repo
+        - SLS_Version: $SLS_Version
+        - SLS_Stage: $colony.environment.id
+        - BRANCH: $colony.repos.current.branch
+
+ingress: 
+  enabled: false
+
+debugging:
+  availability: on

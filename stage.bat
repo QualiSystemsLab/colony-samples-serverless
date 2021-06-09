@@ -1,0 +1,1 @@
+tar -czvf terraform/sls/dist/artifact.tar.gz src/simple-endpoint

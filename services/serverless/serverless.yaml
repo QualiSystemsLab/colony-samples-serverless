@@ -1,0 +1,35 @@
+spec_version: 1
+kind: TerraForm
+
+inputs:
+  - REGION:
+  - SANDBOX_ID:
+  - SLS_Repo:
+  - SLS_Version:
+  - SLS_Stage:
+  - ROLE_ARN: PowerUserAccess
+  - BRANCH: master
+  
+module:
+  source: git::https://github.com/QualiSystemsLab/colony-samples-serverless.git//terraform/sls?ref=${BRANCH}          
+  enable_auto_tagging: false
+
+terraform_version: 0.12.24
+
+variables:
+  values:
+    - SANDBOX_ID: $SANDBOX_ID
+    - aws_region: $REGION
+    - SLS_Repo: $SLS_Repo
+    - SLS_Version: $SLS_Version
+    - SLS_Stage: $SLS_Stage
+
+
+outputs:
+  - URL
+  - SLS_SVC
+
+
+permissions:  
+  aws:
+    role_arn: $ROLE_ARN
